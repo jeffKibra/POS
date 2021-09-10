@@ -1,4 +1,4 @@
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme, useTheme } from "@material-ui/core/styles";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 
 export default function Theme(props) {
@@ -22,6 +22,16 @@ export default function Theme(props) {
       },
     },
     overrides: {
+      // MuiListItem: {
+      //   root: {
+      //     "&$selected": {
+      //       backgroundColor: useTheme().palette.secondary.light,
+      //       "&:hover": {
+      //         backgroundColor: useTheme().palette.secondary.main,
+      //       },
+      //     },
+      //   },
+      // },
       MuiListItemText: {
         primary: {
           fontSize: 12,
@@ -51,6 +61,11 @@ export default function Theme(props) {
         color: "secondary",
       },
       MuiTextField: {
+        size: "small",
+        color: "primary",
+        variant: "outlined",
+      },
+      MuiFormControl: {
         size: "small",
         color: "primary",
         variant: "outlined",

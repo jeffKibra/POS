@@ -1,6 +1,9 @@
 import { Provider } from "react-redux";
-import LoginForm from "./Components/Forms/AuthForms/LoginForm";
+import { BrowserRouter as Router } from "react-router-dom";
+
 import Theme from "./Theme/Theme";
+import Layout from "./Components/Layout/Layout";
+import AppRouter from "./Router";
 
 import store from "./Store";
 
@@ -9,7 +12,11 @@ function App() {
     <>
       <Provider store={store}>
         <Theme>
-          <LoginForm />
+          <Router>
+            <Layout>
+              <AppRouter />
+            </Layout>
+          </Router>
         </Theme>
       </Provider>
     </>
