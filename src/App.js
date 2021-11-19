@@ -7,7 +7,8 @@ import AppRouter from "./Router";
 
 import store from "./Store";
 
-function App() {
+function App(props) {
+  console.log(props);
   return (
     <>
       <Provider store={store}>
