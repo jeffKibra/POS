@@ -9,19 +9,17 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from "@material-ui/core";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowDropDown } from "@material-ui/icons";
+import { Dashboard, Ballot } from "@material-ui/icons";
 
-import { Accordion, AccordionDetails, AccordionSummary } from "../UI/Accordion";
+import DrawerItemCollapsible from "./DrawerParts/DrawerItemCollapsible";
 import { drawerWidth } from "../../constants/UI";
 
 import * as routes from "../../constants/routes";
 
-const useStyles = makeStyles((theme) => ({
+export const useDrawerStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
@@ -71,9 +69,54 @@ const useStyles = makeStyles((theme) => ({
 
 function ResponsiveDrawer(props) {
   const { open, closeDrawer } = props;
-  const classes = useStyles();
+  const classes = useDrawerStyles();
 
   const location = useLocation();
+
+  const items = [
+    {
+      summary: "Products",
+      Icon: <Ballot />,
+      links: [
+        {
+          route: routes.PRODUCTS_LIST,
+          title: "Products List",
+        },
+        {
+          route: routes.CREATE_PRODUCT,
+          title: "Create Product",
+        },
+      ],
+    },
+    {
+      summary: "Stock",
+      Icon: <Ballot />,
+      links: [
+        {
+          route: routes.PRODUCTS_LIST,
+          title: "Products List",
+        },
+        {
+          route: routes.CREATE_PRODUCT,
+          title: "Create Product",
+        },
+      ],
+    },
+    {
+      summary: "Sales",
+      Icon: <Ballot />,
+      links: [
+        {
+          route: routes.PRODUCTS_LIST,
+          title: "Products List",
+        },
+        {
+          route: routes.CREATE_PRODUCT,
+          title: "Create Product",
+        },
+      ],
+    },
+  ];
 
   const drawer = (
     <div className={classes.root}>
@@ -89,55 +132,21 @@ function ResponsiveDrawer(props) {
             root: classes.selected,
           }}
         >
-          <ListItemIcon>
-            <InboxIcon />
+          <ListItemIcon className={classes.white}>
+            <Dashboard />
           </ListItemIcon>
-          <ListItemText primary="Products" />
+          <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem>
-          <Accordion style={{ width: "100%" }}>
-            <AccordionSummary
-              classes={{ root: classes.accordionSummary }}
-              expandIcon={<ArrowDropDown />}
-            >
-              <ListItemIcon className={classes.white}>
-                <InboxIcon />
-              </ListItemIcon>
-              Products
-            </AccordionSummary>
-
-            <AccordionDetails
-              classes={{
-                root: classes.accordionDetails,
-              }}
-            >
-              <List className={classes.accordionList}>
-                <ListItem
-                  button
-                  component={Link}
-                  to={routes.CREATE_PRODUCT}
-                  selected={location.pathname === routes.CREATE_PRODUCT}
-                  classes={{
-                    root: classes.selected,
-                  }}
-                >
-                  <ListItemText primary="Products" />
-                </ListItem>
-                <ListItem
-                  button
-                  component={Link}
-                  to={routes.PRODUCTS_LIST}
-                  selected={location.pathname === routes.PRODUCTS_LIST}
-                  classes={{
-                    root: classes.selected,
-                  }}
-                >
-                  <ListItemText primary="Create Product" />
-                </ListItem>
-              </List>
-            </AccordionDetails>
-          </Accordion>
-        </ListItem>
+        {items.map((item, index) => {
+          const { summary, Icon, links } = item;
+          return (
+            <DrawerItemCollapsible
+              summary={summary}
+              Icon={Icon}
+              routes={links}
+            />
+          );
+        })}
       </List>
       <Divider />
     </div>

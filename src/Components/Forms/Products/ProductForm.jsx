@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -56,10 +57,26 @@ function ProductForm(props) {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm({
     mode: "onChange",
+
     resolver: yupResolver(schema),
   });
+
+  const [variants, setVariants] = useState([1]);
+  const n = +watch("productVariants", 1);
+  console.log({ n, variants });
+
+  useEffect(() => {
+    const arr = [];
+
+    for (let i = 1; i <= n; i++) {
+      arr.push(i);
+    }
+
+    setVariants(arr);
+  }, [n]);
 
   const classes = useStyles();
 
@@ -116,25 +133,41 @@ function ProductForm(props) {
             <TextField
               className={classes.input}
               fullWidth
-              label="Product Code"
-              {...register("productCode")}
-              type="text"
-              error={!!errors.productCode}
-              helperText={
-                errors.productCode
-                  ? errors.productCode?.message
-                  : "click icon to scan barcode"
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment>
-                    <IconButton title="scan barcode">
-                      <RiSearchLine />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+              label="Product Variants"
+              {...register("productVariants")}
+              type="number"
+              error={!!errors.productVariants}
+              helperText={errors.productVariants?.message}
+              defaultValue={1}
             />
+
+            {variants.map((variant, i) => {
+              return (
+                <TextField
+                  key={i}
+                  className={classes.input}
+                  fullWidth
+                  label="Product Code"
+                  {...register("productCode")}
+                  type="text"
+                  error={!!errors.productCode}
+                  helperText={
+                    errors.productCode
+                      ? errors.productCode?.message
+                      : "click icon to scan barcode"
+                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment>
+                        <IconButton title="scan barcode">
+                          <RiSearchLine />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              );
+            })}
 
             <Button
               className={classes.input}
