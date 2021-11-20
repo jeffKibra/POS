@@ -9,7 +9,7 @@ import ProductsListPage from "../Pages/Products/ProductsListPage";
 export default function AppRouter(props) {
   return (
     <Switch>
-      <Route exact path={routes.CREATE_PRODUCT} component={CreateProductPage} />
+      <Route exact path={routes.NEW_PRODUCT} component={CreateProductPage} />
       <Route exact path={routes.PRODUCTS_LIST} component={ProductsListPage} />
     </Switch>
   );

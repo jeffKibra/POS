@@ -83,22 +83,16 @@ function ResponsiveDrawer(props) {
           title: "Products List",
         },
         {
-          route: routes.CREATE_PRODUCT,
-          title: "Create Product",
-        },
-      ],
-    },
-    {
-      summary: "Stock",
-      Icon: <Ballot />,
-      links: [
-        {
-          route: routes.PRODUCTS_LIST,
-          title: "Products List",
+          route: routes.NEW_PRODUCT,
+          title: "New Product",
         },
         {
-          route: routes.CREATE_PRODUCT,
-          title: "Create Product",
+          route: routes.PRODUCTS_CATEGORIES,
+          title: "Products Categories",
+        },
+        {
+          route: routes.NEW_CATEGORY,
+          title: "New Category",
         },
       ],
     },
@@ -107,12 +101,26 @@ function ResponsiveDrawer(props) {
       Icon: <Ballot />,
       links: [
         {
-          route: routes.PRODUCTS_LIST,
-          title: "Products List",
+          route: routes.NEW_SALE,
+          title: "New Sale",
         },
         {
-          route: routes.CREATE_PRODUCT,
-          title: "Create Product",
+          route: routes.SALES_HISTORY,
+          title: "Sales History",
+        },
+      ],
+    },
+    {
+      summary: "Reports",
+      Icon: <Ballot />,
+      links: [
+        {
+          route: routes.DAILY_REPORT,
+          title: "Daily Report",
+        },
+        {
+          route: routes.MONTHLY_REPORT,
+          title: "monthly report",
         },
       ],
     },
@@ -126,8 +134,8 @@ function ResponsiveDrawer(props) {
         <ListItem
           button
           component={Link}
-          to={routes.CREATE_PRODUCT}
-          selected={location.pathname === routes.CREATE_PRODUCT}
+          to={routes.DASHBOARD}
+          selected={location.pathname === routes.DASHBOARD}
           classes={{
             root: classes.selected,
           }}
@@ -147,6 +155,21 @@ function ResponsiveDrawer(props) {
             />
           );
         })}
+
+        <ListItem
+          button
+          component={Link}
+          to={routes.STOCK}
+          selected={location.pathname === routes.STOCK}
+          classes={{
+            root: classes.selected,
+          }}
+        >
+          <ListItemIcon className={classes.white}>
+            <Dashboard />
+          </ListItemIcon>
+          <ListItemText primary="Stock" />
+        </ListItem>
       </List>
       <Divider />
     </div>
