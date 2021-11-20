@@ -7,6 +7,7 @@ import CreateProductPage from "../Pages/Products/CreateProductPage";
 import ProductsListPage from "../Pages/Products/ProductsListPage";
 import NewCategoryPage from "../Pages/Products/NewCategoryPage";
 import CategoriesListPage from "../Pages/Products/CategoriesListPage";
+import NewSalePage from "../Pages/Sales/NewSalePage";
 
 export default function AppRouter(props) {
   return (
@@ -19,6 +20,7 @@ export default function AppRouter(props) {
         path={routes.PRODUCTS_CATEGORIES}
         component={CategoriesListPage}
       />
+      <Route exact path={routes.NEW_SALE} component={NewSalePage} />
     </Switch>
   );
 }
