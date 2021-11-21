@@ -86,15 +86,16 @@ function SalesForm(props) {
     onCancel,
     selectProduct,
     handleBack,
-    selectedProduct: { productCode, productName, unitPrice, BP },
+    selectedProduct,
     searchingProduct,
   } = props;
+  const { productCode, productName, unitPrice, BP } = selectedProduct;
 
   const classes = useStyles();
   const code = watch("productCode");
   const qty = watch("qty", 1);
   const discount = watch("discount");
-  const subTotal = +unitPrice * +qty - discount;
+  const sum = +unitPrice * +qty - discount;
   console.log({ code, qty, discount });
 
   function submitCode() {
@@ -103,7 +104,7 @@ function SalesForm(props) {
 
   function submit(data) {
     console.log({ data });
-    addSale(data);
+    addSale({ ...data, ...selectedProduct, sum });
   }
 
   console.log({ productName, unitPrice, BP });
@@ -125,7 +126,7 @@ function SalesForm(props) {
                 productName={productName}
                 BP={BP}
                 unitPrice={+unitPrice}
-                subTotal={subTotal}
+                sum={sum}
               />{" "}
               <TextField
                 className={classes.input}
@@ -227,7 +228,7 @@ export default SalesForm;
 
 function SaleDetails(props) {
   const classes = useStyles();
-  const { productCode, productName, BP, unitPrice, subTotal } = props;
+  const { productCode, productName, BP, unitPrice, sum } = props;
 
   return (
     <div className={classes.details}>
@@ -235,7 +236,7 @@ function SaleDetails(props) {
       <Typography variant="caption">Product Code: {productCode}</Typography>
       <Typography variant="caption">BP : Ksh {BP}</Typography>
       <Typography variant="caption">Unit price: ksh {unitPrice}</Typography>
-      <Typography variant="body2">Sub Total: ksh {subTotal}</Typography>
+      <Typography variant="body2">Sub Total: ksh {sum}</Typography>
     </div>
   );
 }
@@ -248,5 +249,5 @@ SaleDetails.propTypes = {
   productCode: PropTypes.string.isRequired,
   BP: PropTypes.string.isRequired,
   unitPrice: PropTypes.string.isRequired,
-  subTotal: PropTypes.number,
+  sum: PropTypes.number,
 };

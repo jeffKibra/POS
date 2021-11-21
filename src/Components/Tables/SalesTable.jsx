@@ -1,11 +1,19 @@
+import { useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Tooltip,
+  IconButton,
+  ButtonBase,
+} from "@material-ui/core";
+import { Edit, Delete, MoreVert } from "@material-ui/icons";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   table: {
@@ -13,31 +21,27 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(
-  productCode,
-  productName,
-  unitPrice,
-  qty,
-  discount,
-  subTotal
-) {
-  return { productCode, productName, unitPrice, qty, discount, subTotal };
-}
+const TAX_RATE = 0.16;
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+function SalesTable(props) {
+  const { invoicedProducts } = props;
 
-export default function SalesTable() {
+  const { invoiceTotal, invoiceSubtotal, invoiceTaxes } = useMemo(() => {
+    const invoiceTotal = invoicedProducts.reduce((prevSum, product) => {
+      return prevSum + +product.sum;
+    }, 0);
+    const invoiceTaxes = Number(TAX_RATE * invoiceTotal).toFixed(2);
+
+    const invoiceSubtotal = Number(invoiceTotal - invoiceTaxes).toFixed(2);
+
+    return {
+      invoiceTotal,
+      invoiceSubtotal,
+      invoiceTaxes,
+    };
+  }, [invoicedProducts]);
+
   const classes = useStyles();
-  const invoiceTotal = 500;
-  const TAX_RATE = 0.16;
-  const invoiceSubtotal = (1 - TAX_RATE) * invoiceTotal;
-  const invoiceTaxes = TAX_RATE * invoiceTotal;
 
   return (
     <div>
@@ -47,6 +51,7 @@ export default function SalesTable() {
           className={classes.table}
           aria-label="spanning table"
         >
+          <caption>click item name to edit</caption>
           <TableHead>
             <TableRow>
               <TableCell align="center" colSpan={4}>
@@ -55,7 +60,7 @@ export default function SalesTable() {
               <TableCell align="right">Price</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>Product Name</TableCell>
+              <TableCell>Item Name</TableCell>
               <TableCell align="right">Qty</TableCell>
               <TableCell align="right">Unit</TableCell>
               <TableCell align="right">Discount</TableCell>
@@ -63,13 +68,24 @@ export default function SalesTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, i) => (
+            {invoicedProducts.map((product, i) => (
               <TableRow key={i}>
-                <TableCell>{row.productName}</TableCell>
-                <TableCell align="right">{row.qty}</TableCell>
-                <TableCell align="right">{row.unitPrice}</TableCell>
-                <TableCell align="right">{row.discount}</TableCell>
-                <TableCell align="right">{row.sum}</TableCell>
+                <TableCell style={{ padding: 0 }}>
+                  <ButtonBase
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      padding: "6px 24px 6px 16px",
+                    }}
+                  >
+                    {product.productName}
+                  </ButtonBase>
+                </TableCell>
+                <TableCell align="right">{product.qty}</TableCell>
+                <TableCell align="right">{product.unitPrice}</TableCell>
+                <TableCell align="right">{product.discount}</TableCell>
+                <TableCell align="right">{product.sum}</TableCell>
               </TableRow>
             ))}
 
@@ -95,3 +111,9 @@ export default function SalesTable() {
     </div>
   );
 }
+
+SalesTable.propTypes = {
+  invoicedProducts: PropTypes.array.isRequired,
+};
+
+export default SalesTable;

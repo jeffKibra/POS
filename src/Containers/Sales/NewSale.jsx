@@ -26,6 +26,7 @@ const products = [
 export default function NewSale(props) {
   const [formOpen, setFormOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({});
+  const [invoicedProducts, setInvoicedProducts] = useState([]);
   const classes = useStyles();
 
   function openForm() {
@@ -35,7 +36,32 @@ export default function NewSale(props) {
     setFormOpen(false);
     cancelSelectedProduct();
   }
-  function addSale() {
+  function addSale(data) {
+    console.log({ data });
+    let arr = [...invoicedProducts];
+    const index = invoicedProducts.findIndex(
+      (p) => p.productCode === data.productCode
+    );
+    if (index > -1) {
+      arr = arr.map((p, i) => {
+        const { discount, unitPrice } = p;
+        const qty = +p.qty + +data.qty;
+        const sum = qty * unitPrice - discount;
+        if (i === index) {
+          return {
+            ...p,
+            qty,
+            sum,
+          };
+        } else {
+          return p;
+        }
+      });
+    } else if (index === -1) {
+      arr = [...invoicedProducts, data];
+    }
+    setInvoicedProducts(arr);
+    setSelectedProduct({});
     closeForm();
   }
   function cancelSelectedProduct() {
@@ -70,7 +96,7 @@ export default function NewSale(props) {
           </Button>
         </div>
       )}
-      <SalesTable />
+      <SalesTable invoicedProducts={invoicedProducts} />
     </>
   );
 }
