@@ -8,11 +8,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Tooltip,
-  IconButton,
   ButtonBase,
 } from "@material-ui/core";
-import { Edit, Delete, MoreVert } from "@material-ui/icons";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
